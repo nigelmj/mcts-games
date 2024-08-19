@@ -1,9 +1,10 @@
+from typing import Optional
 from game import Game
 from math import sqrt, log
 
 
 class Node:
-    def __init__(self, game, parent=None, action=None):
+    def __init__(self, game: Game, parent: Optional["Node"]=None, action: Optional[tuple[int, int]]=None):
         self.game = game
         self.parent = parent
         self.action = action
@@ -18,13 +19,15 @@ class Node:
         return self.game.is_game_over()
 
     def uct(self) -> float:
-        if self.simulations == 0:
+        if self.simulations == 0 or self.parent is None:
             return float("inf")
         exploitation = self.wins / self.simulations
         exploration = sqrt(2 * log(self.parent.simulations) / self.simulations)
         return exploitation + exploration
 
     def best_child(self) -> "Node":
+        if self.children is None:
+            return self
         return max(self.children, key=lambda node: node.uct())
 
     def get_children(self) -> list["Node"]:

@@ -3,10 +3,9 @@ from game import Game
 
 class TicTacToe(Game):
     def __init__(self, player: int) -> None:
-        super().__init__(player)
-        self.board = [[0 for _ in range(3)] for _ in range(3)]
+        super().__init__([[0 for _ in range(3)] for _ in range(3)], player)
 
-    def make_move(self, row: int, col: int) -> int:
+    def make_move(self, row: int, col: int) -> None:
         if self.board[row][col] == 0:
             self.board[row][col] = self.current_player
             self.current_player = -self.current_player

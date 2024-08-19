@@ -6,7 +6,7 @@ class MonteCarloTreeSearch:
     def __init__(self, root) -> None:
         self.root = root
 
-    def best_action(self, simulations_number: int) -> int:
+    def best_action(self, simulations_number: int) -> tuple[int, int]:
         for _ in range(simulations_number):
             node = self._selection()
             expanded_node = self._expansion(node)

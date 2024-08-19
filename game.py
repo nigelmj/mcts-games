@@ -3,11 +3,12 @@ import random
 
 
 class Game(ABC):
-    def __init__(self, player: int) -> None:
+    def __init__(self, board: list[list[int]], player: int) -> None:
+        self.board = board
         self.current_player = player
 
     @abstractmethod
-    def make_move(self, row: int, col: int) -> int:
+    def make_move(self, row: int, col: int) -> None:
         pass
 
     @abstractmethod
