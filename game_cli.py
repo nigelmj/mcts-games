@@ -1,5 +1,7 @@
 from tictactoe import TicTacToe
 from player_type import PlayerType
+from mcts import MonteCarloTreeSearch
+from node import Node
 
 import time
 
@@ -36,14 +38,32 @@ class TicTacToeCLI:
             if self.game.current_player == 1:
                 if self.player_1_type == PlayerType.HUMAN:
                     row, col = self.get_input()
-                    self.game.make_move(row, col)
+
+                elif self.player_2_type == PlayerType.COMPUTER:
+                    node = Node(self.game, None, None)
+                    mcts = MonteCarloTreeSearch(node)
+                    row, col = mcts.best_action(1000)
+
+                else:
+                    row, col = self.game.make_random_move()
+
+                self.game.make_move(row, col)
 
             elif self.game.current_player == -1:
                 if self.player_2_type == PlayerType.HUMAN:
                     row, col = self.get_input()
-                    self.game.make_move(row, col)
 
-            winner = self.game.check_winner()
+                elif self.player_2_type == PlayerType.COMPUTER:
+                    node = Node(self.game, None, None)
+                    mcts = MonteCarloTreeSearch(node)
+                    row, col = mcts.best_action(1000)
+
+                else:
+                    row, col = self.game.make_random_move()
+
+                self.game.make_move(row, col)
+
+            winner = self.game.get_winner()
             if winner:
                 self.display_board()
                 print(f"Player {'X' if winner == 1 else 'O'} wins!")

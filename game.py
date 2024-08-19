@@ -26,5 +26,5 @@ class Game(ABC):
         pass
 
     @abstractmethod
-    def copy(self, board):
+    def copy(self, board: list[list[int]]) -> "Game":
         pass
