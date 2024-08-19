@@ -1,17 +1,17 @@
-import random
+from game import Game
 
 
-class TicTacToe:
+class TicTacToe(Game):
     def __init__(self, player: int) -> None:
+        super().__init__(player)
         self.board = [[0 for _ in range(3)] for _ in range(3)]
-        self.current_player = player
 
     def make_move(self, row: int, col: int) -> int:
         if self.board[row][col] == 0:
             self.board[row][col] = self.current_player
             self.current_player = -self.current_player
 
-    def check_winner(self) -> int:
+    def get_winner(self) -> int:
         for i in range(3):
             if self.board[i][0] == self.board[i][1] == self.board[i][2] != 0:
                 return self.board[i][0]
@@ -26,15 +26,18 @@ class TicTacToe:
         return 0
 
     def is_game_over(self) -> bool:
-        if self.check_winner() != 0:
+        if self.get_winner() != 0:
             return True
-        return all(self.board[i][j] != 0 for i in range(3) for j in range(3))
+        return all(all(cell != 0 for cell in row) for row in self.board)
 
-    def valid_moves(self) -> list[tuple[int, int]]:
+    def get_legal_moves(self) -> list[tuple[int, int]]:
         return [(i, j) for i in range(3) for j in range(3) if self.board[i][j] == 0]
 
-    def set_board(self, board: list[list[int]]) -> None:
+    def set_board(self, board):
         self.board = board
 
-    def get_random_move(self) -> tuple[int, int]:
-        return random.choice(self.valid_moves())
+    def copy(self, board):
+        new_board = [row.copy() for row in board]
+        new_game = TicTacToe(self.current_player * -1)
+        new_game.set_board(new_board)
+        return new_game
