@@ -9,6 +9,6 @@ class PlayerType(Enum):
     @staticmethod
     def get_type_pair() -> tuple["PlayerType", "PlayerType"]:
         player_1 = PlayerType.COMPUTER
-        player_2 = PlayerType.COMPUTER
+        player_2 = PlayerType.HUMAN
 
         return player_1, player_2
