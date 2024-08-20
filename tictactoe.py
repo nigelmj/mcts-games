@@ -32,11 +32,10 @@ class TicTacToe(Game):
     def get_legal_moves(self) -> list[tuple[int, int]]:
         return [(i, j) for i in range(3) for j in range(3) if self.board[i][j] == 0]
 
-    def set_board(self, board):
+    def set_board(self, board) -> None:
         self.board = board
 
-    def copy(self, board):
-        new_board = [row.copy() for row in board]
-        new_game = TicTacToe(self.current_player * -1)
-        new_game.set_board(new_board)
+    def copy(self) -> "TicTacToe":
+        new_game = TicTacToe(self.current_player)
+        new_game.set_board([row.copy() for row in self.board])
         return new_game
