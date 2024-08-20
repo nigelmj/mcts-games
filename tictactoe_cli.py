@@ -1,5 +1,5 @@
 from tictactoe import TicTacToe
-from player_type import PlayerType
+from player import PlayerType
 from mcts import MonteCarloTreeSearch
 from node import Node
 
@@ -11,13 +11,13 @@ class TicTacToeCLI:
         self.game = TicTacToe(1)
         self.player_1_type, self.player_2_type = player_pair
 
-    def display_board(self):
+    def display_board(self) -> None:
         print("\nBoard:")
         for row in self.game.board:
             print(" | ".join(["X" if x == 1 else "O" if x == -1 else " " for x in row]))
             print("-" * 9)
 
-    def get_input(self):
+    def get_input(self) -> tuple[int, int]:
         while True:
             try:
                 row = int(input("Enter row (1, 2, 3): ")) - 1
@@ -31,7 +31,7 @@ class TicTacToeCLI:
             except ValueError:
                 print("Invalid input. Please enter numbers.")
 
-    def play(self):
+    def play(self) -> None:
         while not self.game.is_game_over():
             self.display_board()
             print(f"Player {'X' if self.game.current_player == 1 else 'O'}'s turn")
