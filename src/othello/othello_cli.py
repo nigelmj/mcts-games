@@ -1,7 +1,7 @@
-from othello import Othello
-from player import PlayerType
-from mcts import MonteCarloTreeSearch
-from node import Node
+from src.player import PlayerType
+from src.mcts import MonteCarloTreeSearch
+from src.node import Node
+from .othello import Othello
 
 import time
 

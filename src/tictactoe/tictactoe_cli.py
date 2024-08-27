@@ -1,7 +1,7 @@
-from tictactoe import TicTacToe
-from player import PlayerType
-from mcts import MonteCarloTreeSearch
-from node import Node
+from src.player import PlayerType
+from src.mcts import MonteCarloTreeSearch
+from src.node import Node
+from .tictactoe import TicTacToe
 
 import time
 
@@ -39,10 +39,11 @@ class TicTacToeCLI:
                 if self.player_1_type == PlayerType.HUMAN:
                     row, col = self.get_input()
 
-                elif self.player_2_type == PlayerType.COMPUTER:
+                elif self.player_1_type == PlayerType.COMPUTER:
                     node = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch(node)
                     row, col = mcts.best_action(1000)
+                    print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
                     row, col = self.game.make_random_move()
@@ -57,6 +58,7 @@ class TicTacToeCLI:
                     node = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch(node)
                     row, col = mcts.best_action(1000)
+                    print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
                     row, col = self.game.make_random_move()
