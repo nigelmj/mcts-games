@@ -9,6 +9,9 @@ class Othello(Game):
         self.board[4][3] = 1
         self.board[4][4] = -1
 
+    def create_game(self) -> "Othello":
+        return Othello(self.current_player)
+
     def make_move(self, row: int, col: int) -> None:
         if self.board[row][col] == 0:
             self.board[row][col] = self.current_player
@@ -98,11 +101,3 @@ class Othello(Game):
             and 0 <= col < 8
             and self.board[row][col] == self.current_player
         )
-
-    def set_board(self, board) -> None:
-        self.board = board
-
-    def copy(self) -> "Othello":
-        new_game = Othello(self.current_player)
-        new_game.set_board([row.copy() for row in self.board])
-        return new_game
