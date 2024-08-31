@@ -1,9 +1,12 @@
-from game import Game
+from src.game import Game
 
 
 class TicTacToe(Game):
     def __init__(self, player: int) -> None:
         super().__init__([[0 for _ in range(3)] for _ in range(3)], player)
+
+    def create_game(self) -> "TicTacToe":
+        return TicTacToe(self.current_player)
 
     def make_move(self, row: int, col: int) -> None:
         if self.board[row][col] == 0:
@@ -30,12 +33,7 @@ class TicTacToe(Game):
         return all(all(cell != 0 for cell in row) for row in self.board)
 
     def get_legal_moves(self) -> list[tuple[int, int]]:
-        return [(i, j) for i in range(3) for j in range(3) if self.board[i][j] == 0]
+        return [(i, j) for i in range(3) for j in range(3) if self.is_legal_move(i, j)]
 
-    def set_board(self, board) -> None:
-        self.board = board
-
-    def copy(self) -> "TicTacToe":
-        new_game = TicTacToe(self.current_player)
-        new_game.set_board([row.copy() for row in self.board])
-        return new_game
+    def is_legal_move(self, row: int, col: int) -> bool:
+        return self.board[row][col] == 0

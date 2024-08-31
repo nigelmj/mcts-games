@@ -1,37 +1,39 @@
-from othello import Othello
-from player import PlayerType
-from mcts import MonteCarloTreeSearch
-from node import Node
+from abc import ABC, abstractmethod
+from .player import PlayerType
+from .node import Node
+from .mcts import MonteCarloTreeSearch
+from .game import Game
 
 import time
 
 
-class OthelloCLI:
-    def __init__(self, player_pair: tuple[PlayerType, PlayerType]) -> None:
-        self.game = Othello(1)
-        self.player_1_type, self.player_2_type = PlayerType.get_type_pair()
+class GameCLI(ABC):
+    def __init__(
+        self, game: Game, player_pair: tuple[PlayerType, PlayerType], player_1, player_2
+    ) -> None:
+        self.game = game
+        self.player_1_type, self.player_2_type = player_pair
+        self.player_1 = player_1
+        self.player_2 = player_2
 
+    @abstractmethod
     def display_board(self) -> None:
-        print("\nBoard:")
-        print("   " + "   ".join([str(x) for x in range(1, 9)]))
-        print()
-        for ind, row in enumerate(self.game.board):
-            print(
-                str(ind + 1)
-                + "  "
-                + " | ".join(["B" if x == 1 else "W" if x == -1 else " " for x in row])
-            )
-            print("   " + "-" * 30)
+        raise NotImplementedError
 
     def get_input(self) -> tuple[int, int]:
+        row_end = len(self.game.board)
+        col_end = len(self.game.board[0])
+
         while True:
             try:
-                row = int(input("Enter row (1-8): ")) - 1
-                col = int(input("Enter col (1-8): ")) - 1
-                if row not in range(8) or col not in range(8):
-                    print("Invalid input. Please enter numbers between 1 and 8.")
+                row = int(input(f"Enter row (1-{row_end}): ")) - 1
+                col = int(input(f"Enter col (1-{col_end}): ")) - 1
+                if row not in range(6) or col not in range(7):
+                    print(
+                        f"Invalid input. Please enter numbers between 1 and {row_end}.\nand between 1 and {col_end}."
+                    )
                 elif self.game.board[row][col] != 0:
-                    print("Cell is already taken. Choose another.")
+                    print("Cell is already taken. Please choose another.")
                 elif not self.game.is_legal_move(row, col):
                     print("Invalid move. Please choose another.")
                 else:
@@ -39,11 +41,11 @@ class OthelloCLI:
             except ValueError:
                 print("Invalid input. Please enter numbers.")
 
-    def play(self) -> None:
+    def play(self, iterations) -> None:
         while not self.game.is_game_over():
             self.display_board()
             print(
-                f"Player {'Black' if self.game.current_player == 1 else 'White'}'s turn"
+                f"Player {self.player_1 if self.game.current_player == 1 else self.player_2}'s turn"
             )
             if self.game.current_player == 1:
                 if self.player_1_type == PlayerType.HUMAN:
@@ -52,7 +54,7 @@ class OthelloCLI:
                 elif self.player_1_type == PlayerType.COMPUTER:
                     node = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch(node)
-                    row, col = mcts.best_action(1000)
+                    row, col = mcts.best_action(iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
@@ -67,23 +69,19 @@ class OthelloCLI:
                 elif self.player_2_type == PlayerType.COMPUTER:
                     node = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch(node)
-                    row, col = mcts.best_action(1000)
+                    row, col = mcts.best_action(iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
                     row, col = self.game.make_random_move()
 
                 self.game.make_move(row, col)
+
             winner = self.game.get_winner()
             if winner:
                 self.display_board()
-                print(f"Player {'Black' if winner == 1 else 'White'} wins!")
+                print(f"Player {self.player_1 if winner == 1 else self.player_2} wins!")
                 return
             time.sleep(1)
         self.display_board()
         print("It's a draw!")
-
-
-if __name__ == "__main__":
-    cli = OthelloCLI(PlayerType.get_type_pair())
-    cli.play()
