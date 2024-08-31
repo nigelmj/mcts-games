@@ -9,11 +9,16 @@ class Connect4CLI(GameCLI):
 
     def display_board(self) -> None:
         print("\nBoard:")
-        for row in self.game.board:
-            print(" | ".join(["X" if x == 1 else "O" if x == -1 else " " for x in row]))
-            print("-" * 15)
+        print("   " + "   ".join([str(x) for x in range(1, 8)]))
+        print()
+        for ind, row in enumerate(self.game.board):
+            print(
+                str(ind + 1)
+                + "  "
+                + " | ".join(["X" if x == 1 else "O" if x == -1 else " " for x in row]))
+            print("   " + "-" * 25)
 
 
 if __name__ == "__main__":
     cli = Connect4CLI(PlayerType.get_type_pair())
-    cli.play()
+    cli.play(50000)

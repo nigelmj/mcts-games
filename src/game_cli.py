@@ -41,7 +41,7 @@ class GameCLI(ABC):
             except ValueError:
                 print("Invalid input. Please enter numbers.")
 
-    def play(self) -> None:
+    def play(self, iterations) -> None:
         while not self.game.is_game_over():
             self.display_board()
             print(
@@ -54,7 +54,7 @@ class GameCLI(ABC):
                 elif self.player_1_type == PlayerType.COMPUTER:
                     node = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch(node)
-                    row, col = mcts.best_action(1000)
+                    row, col = mcts.best_action(iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
@@ -69,7 +69,7 @@ class GameCLI(ABC):
                 elif self.player_2_type == PlayerType.COMPUTER:
                     node = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch(node)
-                    row, col = mcts.best_action(1000)
+                    row, col = mcts.best_action(iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:

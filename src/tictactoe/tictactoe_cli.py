@@ -16,4 +16,4 @@ class TicTacToeCLI(GameCLI):
 
 if __name__ == "__main__":
     cli = TicTacToeCLI(PlayerType.get_type_pair())
-    cli.play()
+    cli.play(1000)

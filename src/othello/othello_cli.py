@@ -22,4 +22,4 @@ class OthelloCLI(GameCLI):
 
 if __name__ == "__main__":
     cli = OthelloCLI(PlayerType.get_type_pair())
-    cli.play()
+    cli.play(1000)
