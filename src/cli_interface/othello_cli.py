@@ -1,6 +1,6 @@
-from src.game_cli import GameCLI
-from src.player import PlayerType
-from .othello import Othello
+from src.cli_interface.game_cli import GameCLI
+from src.cli_interface.player import PlayerType
+from src.games.othello import Othello
 
 
 class OthelloCLI(GameCLI):

@@ -1,6 +1,6 @@
 from typing import Optional
 from math import sqrt, log
-from .game import Game
+from src.games.game import Game
 
 
 class Node:

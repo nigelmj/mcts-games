@@ -1,6 +1,6 @@
-from src.game_cli import GameCLI
-from src.player import PlayerType
-from .tictactoe import TicTacToe
+from src.cli_interface.game_cli import GameCLI
+from src.cli_interface.player import PlayerType
+from src.games.tictactoe import TicTacToe
 
 
 class TicTacToeCLI(GameCLI):

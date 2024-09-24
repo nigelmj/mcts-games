@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from .player import PlayerType
-from .node import Node
-from .mcts import MonteCarloTreeSearch
-from .game import Game
+from src.cli_interface.player import PlayerType
+from src.mcts.node import Node
+from src.mcts.mcts import MonteCarloTreeSearch
+from src.games.game import Game
 
 import time
 

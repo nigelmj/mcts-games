@@ -1,6 +1,6 @@
-from src.game_cli import GameCLI
-from src.player import PlayerType
-from .connect4 import Connect4
+from src.cli_interface.game_cli import GameCLI
+from src.cli_interface.player import PlayerType
+from src.games.connect4 import Connect4
 
 
 class Connect4CLI(GameCLI):
