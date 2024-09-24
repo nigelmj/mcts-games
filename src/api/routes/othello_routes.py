@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
-from ...othello.othello import Othello
-from ...node import Node
-from ...mcts import MonteCarloTreeSearch as MCTS
-from ..utils import move_to_dict
+from src.games.othello import Othello
+from src.mcts.node import Node
+from src.mcts.mcts import MonteCarloTreeSearch as MCTS
+from src.api.utils import move_to_dict
 
 bp = Blueprint("othello", __name__, url_prefix="/api/othello")
 

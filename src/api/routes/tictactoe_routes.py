@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
-from ...tictactoe.tictactoe import TicTacToe
-from ...node import Node
-from ...mcts import MonteCarloTreeSearch as MCTS
-from ..utils import move_to_dict
+from src.games.tictactoe import TicTacToe
+from src.mcts.node import Node
+from src.mcts.mcts import MonteCarloTreeSearch as MCTS
+from src.api.utils import move_to_dict
 
 bp = Blueprint("tictactoe", __name__, url_prefix="/api/tictactoe")
 

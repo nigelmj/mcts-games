@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
-from ...connect4.connect4 import Connect4
-from ...node import Node
-from ...mcts import MonteCarloTreeSearch as MCTS
-from ..utils import move_to_dict
+from src.games.connect4 import Connect4
+from src.mcts.node import Node
+from src.mcts.mcts import MonteCarloTreeSearch as MCTS
+from src.api.utils import move_to_dict
 
 bp = Blueprint("connect4", __name__, url_prefix="/api/connect4")
 
