@@ -1,12 +1,12 @@
-from src.game import Game
+from src.games.game import Game
 
 
 class TicTacToe(Game):
-    def __init__(self, player: int) -> None:
-        super().__init__([[0 for _ in range(3)] for _ in range(3)], player)
+    def __init__(self) -> None:
+        super().__init__([[0 for _ in range(3)] for _ in range(3)])
 
     def create_game(self) -> "TicTacToe":
-        return TicTacToe(self.current_player)
+        return TicTacToe()
 
     def make_move(self, row: int, col: int) -> None:
         if self.board[row][col] == 0:

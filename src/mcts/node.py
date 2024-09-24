@@ -1,6 +1,6 @@
 from typing import Optional
 from math import sqrt, log
-from .game import Game
+from src.games.game import Game
 
 
 class Node:
@@ -8,11 +8,11 @@ class Node:
         self,
         game: Game,
         parent: Optional["Node"] = None,
-        action: Optional[tuple[int, int]] = None,
+        move: Optional[tuple[int, int]] = None,
     ):
         self.game = game
         self.parent = parent
-        self.action = action
+        self.move = move
         self.children = None
         self.wins = 0
         self.simulations = 0

@@ -3,9 +3,9 @@ import random
 
 
 class Game(ABC):
-    def __init__(self, board: list[list[int]], player: int) -> None:
+    def __init__(self, board: list[list[int]]) -> None:
         self.board = board
-        self.current_player = player
+        self.set_player(1)
 
     @abstractmethod
     def make_move(self, row: int, col: int) -> None:
@@ -37,7 +37,11 @@ class Game(ABC):
     def set_board(self, board: list[list[int]]) -> None:
         self.board = board
 
+    def set_player(self, player: int) -> None:
+        self.current_player = player
+
     def copy(self) -> "Game":
         new_game = self.create_game()
         new_game.set_board([row.copy() for row in self.board])
+        new_game.set_player(self.current_player)
         return new_game

@@ -1,22 +1,25 @@
-from .node import Node
+from src.mcts.node import Node
 import random
 
 
 class MonteCarloTreeSearch:
-    def __init__(self, root) -> None:
-        self.root = root
+    def __init__(self) -> None:
+        pass
 
-    def best_action(self, simulations_number: int) -> tuple[int, int]:
+    def best_move(self, root: Node, simulations_number: int) -> tuple[int, int]:
         for _ in range(simulations_number):
-            node = self._selection()
+            node = self._selection(root)
             expanded_node = self._expansion(node)
             terminal_node = self._simulation(expanded_node)
             self._backpropagation(terminal_node)
-        best_child = max(self.root.get_children(), key=lambda child: child.simulations)
-        return best_child.action
+        best_child = max(root.get_children(), key=lambda child: child.simulations)
 
-    def _selection(self) -> Node:
-        node = self.root
+        if not best_child.move:
+            return (-1, -1)
+        return best_child.move
+
+    def _selection(self, root: Node) -> Node:
+        node = root
         while node.is_fully_explored() and not node.is_terminal():
             node = node.best_child()
         return node

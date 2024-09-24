@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from .player import PlayerType
-from .node import Node
-from .mcts import MonteCarloTreeSearch
-from .game import Game
+from src.cli_interface.player import PlayerType
+from src.mcts.node import Node
+from src.mcts.mcts import MonteCarloTreeSearch
+from src.games.game import Game
 
 import time
 
@@ -52,9 +52,9 @@ class GameCLI(ABC):
                     row, col = self.get_input()
 
                 elif self.player_1_type == PlayerType.COMPUTER:
-                    node = Node(self.game, None, None)
-                    mcts = MonteCarloTreeSearch(node)
-                    row, col = mcts.best_action(iterations)
+                    root = Node(self.game, None, None)
+                    mcts = MonteCarloTreeSearch()
+                    row, col = mcts.best_move(root, iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
@@ -67,9 +67,9 @@ class GameCLI(ABC):
                     row, col = self.get_input()
 
                 elif self.player_2_type == PlayerType.COMPUTER:
-                    node = Node(self.game, None, None)
-                    mcts = MonteCarloTreeSearch(node)
-                    row, col = mcts.best_action(iterations)
+                    root = Node(self.game, None, None)
+                    mcts = MonteCarloTreeSearch()
+                    row, col = mcts.best_move(root, iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:

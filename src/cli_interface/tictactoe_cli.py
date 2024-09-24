@@ -1,11 +1,11 @@
-from src.game_cli import GameCLI
-from src.player import PlayerType
-from .tictactoe import TicTacToe
+from src.cli_interface.game_cli import GameCLI
+from src.cli_interface.player import PlayerType
+from src.games.tictactoe import TicTacToe
 
 
 class TicTacToeCLI(GameCLI):
     def __init__(self, player_pair: tuple[PlayerType, PlayerType]) -> None:
-        super().__init__(TicTacToe(1), player_pair, "X", "O")
+        super().__init__(TicTacToe(), player_pair, "X", "O")
 
     def display_board(self) -> None:
         print("\nBoard:")

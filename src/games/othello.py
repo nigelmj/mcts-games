@@ -1,16 +1,16 @@
-from src.game import Game
+from src.games.game import Game
 
 
 class Othello(Game):
-    def __init__(self, player: int) -> None:
-        super().__init__([[0 for _ in range(8)] for _ in range(8)], player)
+    def __init__(self) -> None:
+        super().__init__([[0 for _ in range(8)] for _ in range(8)])
         self.board[3][3] = -1
         self.board[3][4] = 1
         self.board[4][3] = 1
         self.board[4][4] = -1
 
     def create_game(self) -> "Othello":
-        return Othello(self.current_player)
+        return Othello()
 
     def make_move(self, row: int, col: int) -> None:
         if self.board[row][col] == 0:

@@ -1,11 +1,11 @@
-from src.game_cli import GameCLI
-from src.player import PlayerType
-from .othello import Othello
+from src.cli_interface.game_cli import GameCLI
+from src.cli_interface.player import PlayerType
+from src.games.othello import Othello
 
 
 class OthelloCLI(GameCLI):
     def __init__(self, player_pair: tuple[PlayerType, PlayerType]) -> None:
-        super().__init__(Othello(1), player_pair, "Black", "White")
+        super().__init__(Othello(), player_pair, "Black", "White")
 
     def display_board(self) -> None:
         print("\nBoard:")
