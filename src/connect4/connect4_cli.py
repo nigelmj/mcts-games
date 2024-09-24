@@ -5,7 +5,7 @@ from .connect4 import Connect4
 
 class Connect4CLI(GameCLI):
     def __init__(self, player_pair: tuple[PlayerType, PlayerType]) -> None:
-        super().__init__(Connect4(1), player_pair, "X", "O")
+        super().__init__(Connect4(), player_pair, "X", "O")
 
     def display_board(self) -> None:
         print("\nBoard:")

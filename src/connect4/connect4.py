@@ -2,11 +2,11 @@ from src.game import Game
 
 
 class Connect4(Game):
-    def __init__(self, player: int) -> None:
-        super().__init__([[0 for _ in range(7)] for _ in range(6)], player)
+    def __init__(self) -> None:
+        super().__init__([[0 for _ in range(7)] for _ in range(6)])
 
     def create_game(self) -> "Connect4":
-        return Connect4(self.current_player)
+        return Connect4()
 
     def make_move(self, row: int, col: int) -> None:
         if self.board[row][col] == 0:

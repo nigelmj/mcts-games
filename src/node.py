@@ -8,11 +8,11 @@ class Node:
         self,
         game: Game,
         parent: Optional["Node"] = None,
-        action: Optional[tuple[int, int]] = None,
+        move: Optional[tuple[int, int]] = None,
     ):
         self.game = game
         self.parent = parent
-        self.action = action
+        self.move = move
         self.children = None
         self.wins = 0
         self.simulations = 0
