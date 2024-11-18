@@ -1,5 +1,6 @@
 from src.mcts.node import Node
 import random
+import time
 
 
 class MonteCarloTreeSearch:
@@ -7,15 +8,20 @@ class MonteCarloTreeSearch:
         pass
 
     def best_move(self, root: Node, simulations_number: int) -> tuple[int, int]:
+        start = time.time()
         for _ in range(simulations_number):
             node = self._selection(root)
             expanded_node = self._expansion(node)
-            terminal_node = self._simulation(expanded_node)
-            self._backpropagation(terminal_node)
+            result = self._simulation(expanded_node)
+            self._backpropagation(expanded_node, result * root.game.current_player)
         best_child = max(root.get_children(), key=lambda child: child.simulations)
 
         if not best_child.move:
             return (-1, -1)
+        for child in root.get_children():
+            print(child.move, child.wins, child.simulations)
+        print()
+        print("Time:", time.time() - start)
         return best_child.move
 
     def _selection(self, root: Node) -> Node:
@@ -32,19 +38,16 @@ class MonteCarloTreeSearch:
         unexplored_children = [child for child in children if child.simulations == 0]
         return random.choice(unexplored_children)
 
-    def _simulation(self, expanded_node: Node) -> Node:
-        while not expanded_node.is_terminal():
-            expanded_node = random.choice(expanded_node.get_children())
-        return expanded_node
+    def _simulation(self, expanded_node: Node) -> int:
+        simulated_game = expanded_node.game.copy()
+        while not simulated_game.is_game_over():
+            move = random.choice(simulated_game.get_legal_moves())
+            simulated_game.make_move(*move)
+        return simulated_game.get_winner()
 
-    def _backpropagation(self, terminal_node: Node) -> None:
-        player = terminal_node.game.get_winner() * -1
+    def _backpropagation(self, terminal_node: Node, result: int) -> None:
         node = terminal_node
         while node is not None:
-            if player != 0:
-                if node.game.current_player == player:
-                    node.wins += 1
-                else:
-                    node.wins -= 1
+            node.wins += result
             node.simulations += 1
             node = node.parent
