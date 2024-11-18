@@ -8,15 +8,19 @@ class Othello(Game):
         self.board[3][4] = 1
         self.board[4][3] = 1
         self.board[4][4] = -1
+        self._legal_moves_cache = None
 
     def create_game(self) -> "Othello":
         return Othello()
 
     def make_move(self, row: int, col: int) -> None:
-        if self.board[row][col] == 0:
-            self.board[row][col] = self.current_player
-            self.flip_pieces(row, col)
+        self._legal_moves_cache = None
+        if row == -1 and col == -1:
             self.current_player = -self.current_player
+            return
+        self.board[row][col] = self.current_player
+        self.flip_pieces(row, col)
+        self.current_player = -self.current_player
 
     def flip_pieces(self, row: int, col: int) -> None:
         for i in range(-1, 2):
@@ -49,26 +53,36 @@ class Othello(Game):
         if not self.is_game_over():
             return 0
         count = 0
-        for ind, row in enumerate(self.board):
-            count += row.count(1)
-            count -= row.count(-1)
+        for row in self.board:
+            pieces = row.count(1) - row.count(-1)
+            count += pieces
+            if count > 32 or count < -32:
+                return 1 if count > 0 else -1
         return 1 if count > 0 else -1 if count < 0 else 0
 
     def is_game_over(self) -> bool:
-        if not self.get_legal_moves():
+        if not self.get_possible_moves():
             self.current_player = -self.current_player
-            if not self.get_legal_moves():
+            if not self.get_possible_moves():
                 return True
             self.current_player = -self.current_player
         return False
 
-    def get_legal_moves(self) -> list[tuple[int, int]]:
-        moves = []
+    def get_possible_moves(self) -> list[tuple[int, int]]:
+        if self._legal_moves_cache is not None:
+            return self._legal_moves_cache
+        self._legal_moves_cache = []
         for i in range(8):
             for j in range(8):
-                if self.board[i][j] == 0 and self.is_legal_move(i, j):
-                    moves.append((i, j))
-        return moves
+                if self.is_legal_move(i, j):
+                    self._legal_moves_cache.append((i, j))
+        return self._legal_moves_cache
+
+    def get_legal_moves(self) -> list[tuple[int, int]]:
+        possible_moves = self.get_possible_moves()
+        if len(possible_moves) == 0:
+            return [(-1, -1)]
+        return possible_moves
 
     def is_legal_move(self, row: int, col: int) -> bool:
         if self.board[row][col] != 0:
