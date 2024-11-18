@@ -54,7 +54,7 @@ class GameCLI(ABC):
                 elif self.player_1_type == PlayerType.COMPUTER:
                     root = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch()
-                    row, col = mcts.best_move(root, iterations, 8)
+                    row, col = mcts.best_move(root, iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
@@ -69,7 +69,7 @@ class GameCLI(ABC):
                 elif self.player_2_type == PlayerType.COMPUTER:
                     root = Node(self.game, None, None)
                     mcts = MonteCarloTreeSearch()
-                    row, col = mcts.best_move(root, iterations, 8)
+                    row, col = mcts.best_move(root, iterations)
                     print(f"Computer plays: {row + 1}, {col + 1}")
 
                 else:
