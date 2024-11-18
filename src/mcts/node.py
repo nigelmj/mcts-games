@@ -46,3 +46,10 @@ class Node:
                 child.make_move(i, j)
                 self.children.append(Node(child, self, move))
         return self.children
+
+    def copy(self) -> "Node":
+        node = Node(self.game.copy(), self.parent, self.move)
+        node.children = self.children
+        node.wins = self.wins
+        node.simulations = self.simulations
+        return node
