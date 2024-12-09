@@ -14,7 +14,7 @@ class MonteCarloTreeSearch:
             node = self._selection(root)
             expanded_node = self._expansion(node)
             result = self._simulation(expanded_node)
-            self._backpropagation(expanded_node, result * root.game.current_player)
+            self._backpropagation(expanded_node, result)
         best_child = max(root.get_children(), key=lambda child: (child.simulations, child.wins))
 
         if not best_child.move:
@@ -51,6 +51,6 @@ class MonteCarloTreeSearch:
     def _backpropagation(self, terminal_node: Node, result: int) -> None:
         node = terminal_node
         while node is not None:
-            node.wins += result
+            node.wins += abs(result) if node.game.current_player != result else -abs(result)
             node.simulations += 1
             node = node.parent
