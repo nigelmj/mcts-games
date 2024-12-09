@@ -7,11 +7,11 @@ class OthelloCLI(GameCLI):
     def __init__(self, player_pair: tuple[PlayerType, PlayerType]) -> None:
         super().__init__(Othello(), player_pair, "Black", "White")
 
-    def display_board(self) -> None:
-        print("\nBoard:")
+    def display_state(self) -> None:
+        print("\nstate:")
         print("   " + "   ".join([str(x) for x in range(1, 9)]))
         print()
-        for ind, row in enumerate(self.game.board):
+        for ind, row in enumerate(self.game.state):
             print(
                 str(ind + 1)
                 + "  "

@@ -3,11 +3,11 @@ from src.games.game import Game
 
 class Othello(Game):
     def __init__(self) -> None:
-        super().__init__([[0 for _ in range(8)] for _ in range(8)])
-        self.board[3][3] = -1
-        self.board[3][4] = 1
-        self.board[4][3] = 1
-        self.board[4][4] = -1
+        super().__init__(8, 8)
+        self.state[3][3] = -1
+        self.state[3][4] = 1
+        self.state[4][3] = 1
+        self.state[4][4] = -1
         self._legal_moves_cache = None
 
     def create_game(self) -> "Othello":
@@ -18,7 +18,7 @@ class Othello(Game):
         if row == -1 and col == -1:
             self.current_player = -self.current_player
             return
-        self.board[row][col] = self.current_player
+        self.state[row][col] = self.current_player
         self.flip_pieces(row, col)
         self.current_player = -self.current_player
 
@@ -35,25 +35,25 @@ class Othello(Game):
         while (
             0 <= new_row < 8
             and 0 <= new_col < 8
-            and self.board[new_row][new_col] == -self.current_player
+            and self.state[new_row][new_col] == -self.current_player
         ):
             new_row += i
             new_col += j
         if (
             0 <= new_row < 8
             and 0 <= new_col < 8
-            and self.board[new_row][new_col] == self.current_player
+            and self.state[new_row][new_col] == self.current_player
         ):
             while row != new_row - i or col != new_col - j:
                 new_row -= i
                 new_col -= j
-                self.board[new_row][new_col] = self.current_player
+                self.state[new_row][new_col] = self.current_player
 
     def get_winner(self) -> int:
         if not self.is_game_over():
             return 0
         count = 0
-        for row in self.board:
+        for row in self.state:
             pieces = row.count(1) - row.count(-1)
             count += pieces
             if count > 32 or count < -32:
@@ -85,7 +85,7 @@ class Othello(Game):
         return possible_moves
 
     def is_legal_move(self, row: int, col: int) -> bool:
-        if self.board[row][col] != 0:
+        if self.state[row][col] != 0:
             return False
         for i in range(-1, 2):
             for j in range(-1, 2):
@@ -100,18 +100,27 @@ class Othello(Game):
         col += j
         if (
             not (0 <= row < 8 and 0 <= col < 8)
-            or self.board[row][col] != -self.current_player
+            or self.state[row][col] != -self.current_player
         ):
             return False
         while (
             0 <= row < 8
             and 0 <= col < 8
-            and self.board[row][col] == -self.current_player
+            and self.state[row][col] == -self.current_player
         ):
             row += i
             col += j
         return (
             0 <= row < 8
             and 0 <= col < 8
-            and self.board[row][col] == self.current_player
+            and self.state[row][col] == self.current_player
         )
+
+    def reset(self) -> None:
+        self.state = [[0 for _ in range(8)] for _ in range(8)]
+        self.state[3][3] = -1
+        self.state[3][4] = 1
+        self.state[4][3] = 1
+        self.state[4][4] = -1
+        self.set_player(1)
+        self._legal_moves_cache = None

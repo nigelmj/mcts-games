@@ -17,12 +17,12 @@ class GameCLI(ABC):
         self.player_2 = player_2
 
     @abstractmethod
-    def display_board(self) -> None:
+    def display_state(self) -> None:
         raise NotImplementedError
 
     def get_input(self) -> tuple[int, int]:
-        row_end = len(self.game.board)
-        col_end = len(self.game.board[0])
+        row_end = len(self.game.state)
+        col_end = len(self.game.state[0])
 
         while True:
             try:
@@ -32,7 +32,7 @@ class GameCLI(ABC):
                     print(
                         f"Invalid input. Please enter numbers between 1 and {row_end}.\nand between 1 and {col_end}."
                     )
-                elif self.game.board[row][col] != 0:
+                elif self.game.state[row][col] != 0:
                     print("Cell is already taken. Please choose another.")
                 elif not self.game.is_legal_move(row, col):
                     print("Invalid move. Please choose another.")
@@ -43,7 +43,7 @@ class GameCLI(ABC):
 
     def play(self, iterations) -> None:
         while not self.game.is_game_over():
-            self.display_board()
+            self.display_state()
             print(
                 f"Player {self.player_1 if self.game.current_player == 1 else self.player_2}'s turn"
             )
@@ -79,9 +79,9 @@ class GameCLI(ABC):
 
             winner = self.game.get_winner()
             if winner:
-                self.display_board()
+                self.display_state()
                 print(f"Player {self.player_1 if winner == 1 else self.player_2} wins!")
                 return
             time.sleep(1)
-        self.display_board()
+        self.display_state()
         print("It's a draw!")

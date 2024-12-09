@@ -6,6 +6,7 @@ from src.api.utils import move_to_dict
 
 bp = Blueprint("connect4", __name__, url_prefix="/api/connect4")
 
+
 @bp.route("/make_move", methods=["POST"])
 def make_move():
     print("hello")
@@ -14,11 +15,11 @@ def make_move():
         return jsonify({"error": "Invalid JSON"}), 400
 
     game = Connect4()
-    board = data.get("board")
+    state = data.get("state")
     player_type = data.get("player_type")
     player = -1 if player_type == "ai" else 1
 
-    game.set_board(board)
+    game.set_state(state)
     game.set_player(player)
 
     row, col = -1, -1

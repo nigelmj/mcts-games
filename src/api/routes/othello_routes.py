@@ -6,6 +6,7 @@ from src.api.utils import move_to_dict
 
 bp = Blueprint("othello", __name__, url_prefix="/api/othello")
 
+
 @bp.route("/make_move", methods=["POST"])
 def make_move():
     data = request.json
@@ -13,11 +14,11 @@ def make_move():
         return jsonify({"error": "Invalid JSON"}), 400
 
     game = Othello()
-    board = data.get("board")
+    state = data.get("state")
     player_type = data.get("player_type")
     player = -1 if player_type == "ai" else 1
 
-    game.set_board(board)
+    game.set_state(state)
     game.set_player(player)
 
     row, col = -1, -1
