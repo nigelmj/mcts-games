@@ -9,9 +9,8 @@ class Connect4(Game):
         return Connect4()
 
     def make_move(self, row: int, col: int) -> None:
-        if self.board[row][col] == 0:
-            self.board[row][col] = self.current_player
-            self.current_player = -self.current_player
+        self.board[row][col] = self.current_player
+        self.current_player = -self.current_player
 
     def get_winner(self) -> int:
         for row in range(6):
@@ -56,7 +55,13 @@ class Connect4(Game):
         return all(all(cell != 0 for cell in row) for row in self.board)
 
     def get_legal_moves(self) -> list[tuple[int, int]]:
-        return [(i, j) for i in range(6) for j in range(7) if self.is_legal_move(i, j)]
+        moves = []
+        for col in range(7):
+            for row in range(5, -1, -1):
+                if self.board[row][col] == 0:
+                    moves.append((row, col))
+                    break
+        return moves
 
     def is_legal_move(self, row: int, col: int) -> bool:
         return self.board[row][col] == 0 and (row == 5 or self.board[row + 1][col] != 0)

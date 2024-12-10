@@ -1,20 +1,29 @@
+from concurrent.futures import ProcessPoolExecutor
 from src.mcts.node import Node
 import random
 import time
 
 
-class MonteCarloTreeSearch:
+class MCTSRootParallel:
     def __init__(self) -> None:
         pass
 
-    def best_move(self, root: Node, simulations_number: int) -> tuple[int, int]:
+    def best_move(self, root: Node, simulations_number: int, num_processes: int = 8) -> tuple[int, int]:
         start = time.time()
 
-        for _ in range(simulations_number):
-            node = self._selection(root)
-            expanded_node = self._expansion(node)
-            result = self._simulation(expanded_node)
-            self._backpropagation(expanded_node, result * root.game.current_player)
+        simulations_per_process = simulations_number // num_processes
+        root_copies = [root.copy() for _ in range(num_processes)]
+
+        with ProcessPoolExecutor() as executor:
+            results = executor.map(self._run_simulations, root_copies, [simulations_per_process] * num_processes)
+
+        for result_root in results:
+            for child in root.get_children():
+                for result_child in result_root.get_children():
+                    if child.move == result_child.move:
+                        child.wins += result_child.wins
+                        child.simulations += result_child.simulations
+
         best_child = max(root.get_children(), key=lambda child: (child.simulations, child.wins))
 
         if not best_child.move:
@@ -26,6 +35,14 @@ class MonteCarloTreeSearch:
         print("Time:", time.time() - start)
 
         return best_child.move
+
+    def _run_simulations(self, root_copy: Node, num_simulations: int):
+        for _ in range(num_simulations):
+            node = self._selection(root_copy)
+            expanded_node = self._expansion(node)
+            result = self._simulation(expanded_node)
+            self._backpropagation(expanded_node, result * root_copy.game.current_player)
+        return root_copy
 
     def _selection(self, root: Node) -> Node:
         node = root

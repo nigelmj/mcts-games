@@ -40,11 +40,16 @@ class Node:
     def get_children(self) -> list["Node"]:
         if self.children is None:
             self.children = []
-            if not self.is_terminal() and not self.game.get_legal_moves():
-                self.game.current_player *= -1
             for move in self.game.get_legal_moves():
                 i, j = move
                 child = self.game.copy()
                 child.make_move(i, j)
                 self.children.append(Node(child, self, move))
         return self.children
+
+    def copy(self) -> "Node":
+        node = Node(self.game.copy(), self.parent, self.move)
+        node.children = self.children
+        node.wins = self.wins
+        node.simulations = self.simulations
+        return node
